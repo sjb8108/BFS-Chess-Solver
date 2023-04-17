@@ -15,7 +15,7 @@ public class Clock {
             ClockConfig endConfig = new ClockConfig(end);
             System.out.println("Hours: "+initalConfig.getHours()+", Start: "
                     +initalConfig.getStart()+", End: "+initalConfig.getEnd());
-            Solver.solve(initalConfig, endConfig);
+            Solver.solve(initalConfig);
         }
     }
 }

@@ -51,7 +51,7 @@ public class ClockConfig implements Configuration{
         if (getStart().equals(getEnd())){
             return true;
         }
-        return true;
+        return false;
     }
 
     /**

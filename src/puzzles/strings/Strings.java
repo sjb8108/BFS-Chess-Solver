@@ -14,7 +14,7 @@ public class Strings {
             StringsConfig endConfig = new StringsConfig(end);
             System.out.println("Start: "+initialConfig.getCurrent()+
                     ", End: "+initialConfig.getEnd());
-            Solver.solve(initialConfig, endConfig);
+            Solver.solve(initialConfig);
         }
     }
 }
