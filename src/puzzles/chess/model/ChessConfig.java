@@ -38,6 +38,10 @@ public class ChessConfig implements Configuration {
                     neighbors.addAll(getPawnNeighbors(i,j));
                 } else if (this.chessBoard[i][j].equals("N")) {
                     neighbors.addAll(getKnightNeighbors(i,j));
+                } else if (this.chessBoard[i][j].equals("K")) {
+                    neighbors.addAll(getKingNeighbors(i,j));
+                } else if (this.chessBoard[i][j].equals("R")) {
+                    neighbors.addAll(getRookNeighbors(i,j));
                 }
             }
         }
@@ -164,6 +168,94 @@ public class ChessConfig implements Configuration {
             }
         } catch (IndexOutOfBoundsException e){}
         return knightNeighbors;
+    }
+    public Collection<Configuration> getKingNeighbors(int row, int col){
+        Set kingNeighbors = new LinkedHashSet<ChessConfig>();
+        try{
+            if (!(this.chessBoard[row-1][col].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row-1,col, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row+1][col].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row+1,col, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row][col-1].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row,col-1, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row][col+1].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row,col+1, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row+1][col+1].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row+1,col+1, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row-1][col-1].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row-1,col-1, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row+1][col-1].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row+1,col-1, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        try{
+            if (!(this.chessBoard[row-1][col+1].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row-1,col+1, "K"));
+                kingNeighbors.add(neighbor);
+            }
+        } catch (IndexOutOfBoundsException e){}
+        return kingNeighbors;
+    }
+    public Collection<Configuration> getRookNeighbors(int row, int col){
+        Set rookNeighbors = new LinkedHashSet<ChessConfig>();
+        //Moves up
+        for(int i = row-1; i>=0; i-=1){
+            if(!(this.chessBoard[i][col].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, i, col, "R"));
+                rookNeighbors.add(neighbor);
+                break;
+            }
+        }
+        //Moves down
+        for(int i=row+1; i<dim; i+=1){
+            if(!(this.chessBoard[i][col].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, i, col, "R"));
+                rookNeighbors.add(neighbor);
+                break;
+            }
+        }
+        //Moves left
+        for(int i=col-1; i>=0; i-=1){
+            if(!(this.chessBoard[row][i].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row, i, "R"));
+                rookNeighbors.add(neighbor);
+                break;
+            }
+        }
+        //Moves right
+        for(int i=col+1; i<dim; i++){
+            if(!(this.chessBoard[row][i].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row, i, "R"));
+                rookNeighbors.add(neighbor);
+                break;
+            }
+        }
+        return rookNeighbors;
     }
 
 }
