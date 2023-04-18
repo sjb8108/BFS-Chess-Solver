@@ -15,7 +15,7 @@ public class Solver {
             Configuration current = toVisit.remove();
             for (Configuration neighbors : current.getNeighbors()) {
                 totalConfigs+=1;
-                if (!predecessor.containsKey(neighbors)) {
+                if (!(predecessor.containsKey(neighbors))) {
                     predecessor.put(neighbors, current);
                     toVisit.offer(neighbors);
                 }
@@ -37,7 +37,7 @@ public class Solver {
                 node = predecessor.get( node );
             }
             for (int i = 0; i < path.size(); i++){
-                System.out.println("Step "+i+": "+path.get(i).toString());
+                System.out.println("Step "+i+": \n"+path.get(i).toString());
             }
             return path;
         }
