@@ -14,9 +14,10 @@ public class Chess {
         } else {
             BufferedReader chessLoader = new BufferedReader(new FileReader(args[0]));
             String[] dims = chessLoader.readLine().split(" ");
-            int dim = Integer.parseInt(dims[0]);
-            String[][] chessBoard = new String[dim][dim];
-            for(int i = 0; i < dim; i++){
+            int rowdim = Integer.parseInt(dims[0]);
+            int coldim = Integer.parseInt(dims[1]);
+            String[][] chessBoard = new String[rowdim][coldim];
+            for(int i = 0; i < rowdim; i++){
                 String l = chessLoader.readLine();
                 String[] f = l.split("\\s+");
                 for (int j = 0; j < f.length; j++){
@@ -25,8 +26,8 @@ public class Chess {
                 }
             }
             System.out.println("File: "+args[0]);
-            for (int i = 0; i<dim; i++) {
-                for (int j = 0; j<dim; j++) {
+            for (int i = 0; i<rowdim; i++) {
+                for (int j = 0; j<coldim; j++) {
                     System.out.print(chessBoard[i][j] + " ");
                 }
                 System.out.println();

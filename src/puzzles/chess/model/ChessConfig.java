@@ -7,17 +7,19 @@ import java.util.*;
 
 public class ChessConfig implements Configuration {
     private String[][] chessBoard;
-    private static int dim;
+    private static int rowdim;
+    private static int coldim;
     public ChessConfig(String[][] chessBoard) {
         this.chessBoard = chessBoard;
-        dim = chessBoard.length;
+        rowdim = chessBoard.length;
+        coldim = chessBoard[0].length;
     }
 
     @Override
     public boolean isSolution() {
         int pieceCount = 0;
-        for (int i = 0; i<dim; i++) {
-            for (int j = 0; j<dim; j++) {
+        for (int i = 0; i<rowdim; i++) {
+            for (int j = 0; j<coldim; j++) {
                 if (!(this.chessBoard[i][j].equals("."))){
                     pieceCount+=1;
                 }
@@ -32,8 +34,8 @@ public class ChessConfig implements Configuration {
     @Override
     public Collection<Configuration> getNeighbors() {
         Set neighbors = new LinkedHashSet<ChessConfig>();
-        for (int i = 0; i<dim; i++) {
-            for (int j = 0; j<dim; j++) {
+        for (int i = 0; i<rowdim; i++) {
+            for (int j = 0; j<coldim; j++) {
                 if (this.chessBoard[i][j].equals("P")){
                     neighbors.addAll(getPawnNeighbors(i,j));
                 } else if (this.chessBoard[i][j].equals("N")) {
@@ -42,6 +44,10 @@ public class ChessConfig implements Configuration {
                     neighbors.addAll(getKingNeighbors(i,j));
                 } else if (this.chessBoard[i][j].equals("R")) {
                     neighbors.addAll(getRookNeighbors(i,j));
+                } else if (this.chessBoard[i][j].equals("B")) {
+                    neighbors.addAll(getBishopNeighbors(i,j));
+                } else if (this.chessBoard[i][j].equals("Q")) {
+                    neighbors.addAll(getQueenNeighbors(i,j));
                 }
             }
         }
@@ -55,8 +61,8 @@ public class ChessConfig implements Configuration {
         else
         {
             ChessConfig otherChess = (ChessConfig) other;
-            for (int i = 0; i<dim; i++){
-                for(int j = 0; j<dim; j++){
+            for (int i = 0; i<rowdim; i++){
+                for(int j = 0; j<coldim; j++){
                     if (!(this.chessBoard[i][j].equals(otherChess.chessBoard[i][j]))){
                         return false;
                     }
@@ -73,9 +79,9 @@ public class ChessConfig implements Configuration {
     public String toString() {
         List<String> listOfStringRow = new ArrayList<>();
         String chessString = "";
-        for (int i = 0; i<dim; i++) {
+        for (int i = 0; i<rowdim; i++) {
             String stringRow = "";
-            for (int j = 0; j<dim; j++) {
+            for (int j = 0; j<coldim; j++) {
                 stringRow+=chessBoard[i][j] + " ";
             }
             listOfStringRow.add(stringRow);
@@ -86,9 +92,9 @@ public class ChessConfig implements Configuration {
         return chessString;
     }
     public String[][] makeNeighbor(int startRow, int startCol, int endRow, int endCol, String piece){
-        String[][] newChessBoard = new String[dim][dim];
-        for (int i = 0; i<dim; i++) {
-            for (int j = 0; j<dim; j++) {
+        String[][] newChessBoard = new String[rowdim][coldim];
+        for (int i = 0; i<rowdim; i++) {
+            for (int j = 0; j<coldim; j++) {
                 if (i == startRow && j == startCol){
                     newChessBoard[i][j] = ".";
                 } else if (i == endRow && j == endCol) {
@@ -223,7 +229,6 @@ public class ChessConfig implements Configuration {
     }
     public Collection<Configuration> getRookNeighbors(int row, int col){
         Set rookNeighbors = new LinkedHashSet<ChessConfig>();
-        //Moves up
         for(int i = row-1; i>=0; i-=1){
             if(!(this.chessBoard[i][col].equals("."))){
                 ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, i, col, "R"));
@@ -231,15 +236,13 @@ public class ChessConfig implements Configuration {
                 break;
             }
         }
-        //Moves down
-        for(int i=row+1; i<dim; i+=1){
+        for(int i=row+1; i<rowdim; i+=1){
             if(!(this.chessBoard[i][col].equals("."))){
                 ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, i, col, "R"));
                 rookNeighbors.add(neighbor);
                 break;
             }
         }
-        //Moves left
         for(int i=col-1; i>=0; i-=1){
             if(!(this.chessBoard[row][i].equals("."))){
                 ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row, i, "R"));
@@ -247,8 +250,7 @@ public class ChessConfig implements Configuration {
                 break;
             }
         }
-        //Moves right
-        for(int i=col+1; i<dim; i++){
+        for(int i=col+1; i<coldim; i++){
             if(!(this.chessBoard[row][i].equals("."))){
                 ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, row, i, "R"));
                 rookNeighbors.add(neighbor);
@@ -257,5 +259,58 @@ public class ChessConfig implements Configuration {
         }
         return rookNeighbors;
     }
-
+    public Collection<Configuration> getBishopNeighbors(int row, int col){
+        Set bishopNeighbors = new LinkedHashSet<ChessConfig>();
+        int dummyrow = row+1;
+        int dummycol = col+1;
+        while (dummyrow < rowdim && dummycol < coldim){
+            if(!(this.chessBoard[dummyrow][dummycol].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, dummyrow, dummycol, "B"));
+                bishopNeighbors.add(neighbor);
+                break;
+            }
+            dummyrow+=1;
+            dummycol+=1;
+        }
+        dummyrow=row-1;
+        dummycol=col-1;
+        while (dummyrow >= 0 && dummycol >= 0){
+            if(!(this.chessBoard[dummyrow][dummycol].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, dummyrow, dummycol, "B"));
+                bishopNeighbors.add(neighbor);
+                break;
+            }
+            dummyrow-=1;
+            dummycol-=1;
+        }
+        dummyrow=row+1;
+        dummycol=col-1;
+        while (dummyrow < rowdim && dummycol >= 0){
+            if(!(this.chessBoard[dummyrow][dummycol].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, dummyrow, dummycol, "B"));
+                bishopNeighbors.add(neighbor);
+                break;
+            }
+            dummyrow+=1;
+            dummycol-=1;
+        }
+        dummyrow=row-1;
+        dummycol=col+1;
+        while(dummyrow >= 0 && dummycol < coldim){
+            if(!(this.chessBoard[dummyrow][dummycol].equals("."))){
+                ChessConfig neighbor = new ChessConfig(makeNeighbor(row, col, dummyrow, dummycol, "B"));
+                bishopNeighbors.add(neighbor);
+                break;
+            }
+            dummyrow-=1;
+            dummycol+=1;
+        }
+        return bishopNeighbors;
+    }
+    public Collection<Configuration> getQueenNeighbors(int row, int col) {
+        Set queenNeighbors = new LinkedHashSet<ChessConfig>();
+        queenNeighbors.addAll(getRookNeighbors(row, col));
+        queenNeighbors.addAll(getBishopNeighbors(row, col));
+        return queenNeighbors;
+    }
 }
