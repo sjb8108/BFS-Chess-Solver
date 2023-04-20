@@ -17,9 +17,14 @@ public class ChessPTUI implements Observer<ChessModel, String> {
 
     @Override
     public void update(ChessModel model, String data) {
-        // for demonstration purposes
-        System.out.println(data);
-        System.out.println(model);
+        if (data.equals("Complete")){
+            System.out.println("You completed this puzzle!");
+        } else if (data.equals("new game")) {
+        } else {
+            System.out.println(data);
+            System.out.println(model.getCurrentConfig().toString());
+        }
+
     }
 
     private void displayHelp() {
@@ -30,20 +35,27 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         System.out.println( "r(eset)             -- reset the current game" );
     }
 
-    public void run() {
+    public void run() throws IOException {
         Scanner in = new Scanner( System.in );
-        for ( ; ; ) {
+        while(true) {
             System.out.print( "> " );
             String line = in.nextLine();
-            String[] words = line.split( "\\s+" );
-            if (words.length > 0) {
-                if (words[0].startsWith( "q" )) {
-                    break;
-                }
-                else {
-                    displayHelp();
-                }
+            if (line.startsWith("q")){
+                break;
+            } else if (line.startsWith("l")) {
+                String[] args = line.split(" ");
+                this.model.newGame(args[1]);
+            } else if (line.startsWith("r")) {
+                this.model.restart();
+            } else if (line.startsWith("h")) {
+                this.model.useHint();
+            } else if (line.startsWith("s")) {
+                String[] args = line.split(" ");
+                int row = Integer.parseInt(args[1]);
+                int col = Integer.parseInt(args[2]);
+                this.model.selectPieces(row, col);
             }
+
         }
     }
 

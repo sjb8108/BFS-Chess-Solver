@@ -15,6 +15,10 @@ public class ChessConfig implements Configuration {
         coldim = chessBoard[0].length;
     }
 
+    public String[][] getChessBoard() {
+        return chessBoard;
+    }
+
     @Override
     public boolean isSolution() {
         int pieceCount = 0;

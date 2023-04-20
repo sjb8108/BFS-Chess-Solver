@@ -8,7 +8,6 @@ import java.util.Scanner;
 
 public class Chess {
     public static void main(String[] args) throws IOException {
-        //NEED TO FIX DIM STUFF CAUSE THEY ARENT SQUARES SOMETIMES!
         if (args.length != 1) {
             System.out.println("Usage: java Chess filename");
         } else {
