@@ -202,6 +202,22 @@ public class ChessModel {
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
+                } else if (this.selectedPiece.equals("B")) {
+                    if(checkBishops(row, col) == true){
+                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                        this.captureOrNot = 1;
+                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                    } else{
+                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                    }
+                } else {
+                    if(checkQueen(row, col) == true){
+                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                        this.captureOrNot = 1;
+                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                    } else{
+                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                    }
                 }
             }
         }
@@ -318,6 +334,64 @@ public class ChessModel {
         return false;
     }
     public boolean checkBishops(int row, int col){
+        int dummyrow;
+        int dummycol;
+        if (selectedRow-row < 0 && selectedCol-col < 0) {
+            dummyrow = selectedRow + 1;
+            dummycol = selectedCol + 1;
+            while (dummyrow < rowdim && dummycol < coldim) {
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow += 1;
+                dummycol += 1;
+            }
+        }
+        if (selectedRow-row > 0 && selectedCol-col > 0) {
+            dummyrow=selectedRow-1;
+            dummycol=selectedCol-1;
+            while (dummyrow >= 0 && dummycol >= 0){
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow-=1;
+                dummycol-=1;
+            }
+        }
+        if (selectedRow-row < 0 && selectedCol-col > 0) {
+            dummyrow=selectedRow+1;
+            dummycol=selectedCol-1;
+            while (dummyrow < rowdim && dummycol >= 0){
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow+=1;
+                dummycol-=1;
+            }
+        }
+        if (selectedRow-row > 0 && selectedCol-col < 0){
+            dummyrow=selectedRow-1;
+            dummycol=selectedCol+1;
+            while(dummyrow >= 0 && dummycol < coldim){
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow-=1;
+                dummycol+=1;
+            }
+        }
         return false;
     }
     public boolean checkQueen(int row, int col){
@@ -359,6 +433,64 @@ public class ChessModel {
                     }
                     return false;
                 }
+            }
+        }
+        int dummyrow;
+        int dummycol;
+        if (selectedRow-row < 0 && selectedCol-col < 0) {
+            dummyrow = selectedRow + 1;
+            dummycol = selectedCol + 1;
+            while (dummyrow < rowdim && dummycol < coldim) {
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow += 1;
+                dummycol += 1;
+            }
+        }
+        if (selectedRow-row > 0 && selectedCol-col > 0) {
+            dummyrow=selectedRow-1;
+            dummycol=selectedCol-1;
+            while (dummyrow >= 0 && dummycol >= 0){
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow-=1;
+                dummycol-=1;
+            }
+        }
+        if (selectedRow-row < 0 && selectedCol-col > 0) {
+            dummyrow=selectedRow+1;
+            dummycol=selectedCol-1;
+            while (dummyrow < rowdim && dummycol >= 0){
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow+=1;
+                dummycol-=1;
+            }
+        }
+        if (selectedRow-row > 0 && selectedCol-col < 0){
+            dummyrow=selectedRow-1;
+            dummycol=selectedCol+1;
+            while(dummyrow >= 0 && dummycol < coldim){
+                if (!(this.currentConfig.getChessBoard()[dummyrow][dummycol].equals("."))) {
+                    if (row == dummyrow && col == dummycol) {
+                        return true;
+                    }
+                    return false;
+                }
+                dummyrow-=1;
+                dummycol+=1;
             }
         }
         return false;
