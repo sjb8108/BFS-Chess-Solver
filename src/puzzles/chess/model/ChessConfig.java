@@ -7,8 +7,8 @@ import java.util.*;
 
 public class ChessConfig implements Configuration {
     private String[][] chessBoard;
-    private static int rowdim;
-    private static int coldim;
+    private int rowdim;
+    private int coldim;
     public ChessConfig(String[][] chessBoard) {
         this.chessBoard = chessBoard;
         rowdim = chessBoard.length;
@@ -17,6 +17,14 @@ public class ChessConfig implements Configuration {
 
     public String[][] getChessBoard() {
         return chessBoard;
+    }
+
+    public int getRowdim() {
+        return rowdim;
+    }
+
+    public int getColdim() {
+        return coldim;
     }
 
     @Override
