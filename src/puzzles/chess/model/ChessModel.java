@@ -44,7 +44,6 @@ public class ChessModel {
 
     public ChessModel(String filename) throws IOException {
         BufferedReader chessLoader = new BufferedReader(new FileReader(filename));
-        System.out.println("Loaded: "+filename);
         String[] dims = chessLoader.readLine().split(" ");
         int rowdim = Integer.parseInt(dims[0]);
         int coldim = Integer.parseInt(dims[1]);
@@ -58,12 +57,6 @@ public class ChessModel {
                 String chessSpot = f[j];
                 chessBoard[i][j] = chessSpot;
             }
-        }
-        for (int i = 0; i<rowdim; i++) {
-            for (int j = 0; j<coldim; j++) {
-                System.out.print(chessBoard[i][j] + " ");
-            }
-            System.out.println();
         }
         this.currentConfig = new ChessConfig(chessBoard);
         this.initalConfigForRestart = currentConfig;
@@ -142,7 +135,11 @@ public class ChessModel {
             }
             ChessConfig hintConfig = (ChessConfig) path.get(1);
             this.currentConfig = hintConfig;
-            alertObservers("Next Step!");
+            if (this.currentConfig.isSolution() == true){
+                alertObservers("Complete");
+            } else {
+                alertObservers("Next Step!");
+            }
             this.captureOrNot = 1;
         }
     }
@@ -174,7 +171,11 @@ public class ChessModel {
                     if(checkPawns(row, col) == true){
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
-                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                        if (this.currentConfig.isSolution() == true){
+                            alertObservers("Complete");
+                        } else {
+                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
@@ -182,7 +183,11 @@ public class ChessModel {
                     if(checkKnights(row, col) == true){
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
-                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                        if (this.currentConfig.isSolution() == true){
+                            alertObservers("Complete");
+                        } else {
+                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
@@ -190,7 +195,11 @@ public class ChessModel {
                     if(checkKings(row, col) == true){
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
-                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                        if (this.currentConfig.isSolution() == true){
+                            alertObservers("Complete");
+                        } else {
+                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
@@ -198,7 +207,11 @@ public class ChessModel {
                     if(checkRooks(row, col) == true){
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
-                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                        if (this.currentConfig.isSolution() == true){
+                            alertObservers("Complete");
+                        } else {
+                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
@@ -206,7 +219,11 @@ public class ChessModel {
                     if(checkBishops(row, col) == true){
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
-                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                        if (this.currentConfig.isSolution() == true){
+                            alertObservers("Complete");
+                        } else {
+                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
@@ -214,7 +231,11 @@ public class ChessModel {
                     if(checkQueen(row, col) == true){
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
-                        alertObservers("Captured from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                        if (this.currentConfig.isSolution() == true){
+                            alertObservers("Complete");
+                        } else {
+                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     } else{
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }

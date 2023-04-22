@@ -11,6 +11,8 @@ public class ChessPTUI implements Observer<ChessModel, String> {
 
     public void init(String filename) throws IOException {
         this.model = new ChessModel(filename);
+        System.out.println("Loaded: "+filename);
+        System.out.println(this.model.getCurrentConfig().toString());
         this.model.addObserver(this);
         displayHelp();
     }
@@ -19,6 +21,7 @@ public class ChessPTUI implements Observer<ChessModel, String> {
     public void update(ChessModel model, String data) {
         if (data.equals("Complete")){
             System.out.println("You completed this puzzle!");
+            System.out.println(model.getCurrentConfig().toString());
         } else if (data.equals("new game")) {
         } else {
             System.out.println(data);

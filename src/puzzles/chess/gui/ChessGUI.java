@@ -59,14 +59,14 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
         this.stage = stage;
         this.arrayOfButtons = new Button[this.model.getCurrentConfig().getRowdim()][this.model.getCurrentConfig().getColdim()];
         BorderPane mainInterface = new BorderPane();
-        HBox loadedFile = new HBox();
+        HBox gameStatus = new HBox();
         HBox LoadResetHint = new HBox();
         GridPane chessBoard = new GridPane();
-        Label loadedLabel = new Label();
-        loadedLabel.setText("Loaded: "+filename);
-        loadedLabel.setFont(new Font(FONT_SIZE));
-        loadedFile.getChildren().add(loadedLabel);
-        loadedFile.setAlignment(Pos.CENTER);
+        Label statusLabel = new Label();
+        statusLabel.setText("Loaded: "+filename);
+        statusLabel.setFont(new Font(FONT_SIZE));
+        gameStatus.getChildren().add(statusLabel);
+        gameStatus.setAlignment(Pos.CENTER);
         Button loadButton = new Button("Load");
         loadButton.setFont(new Font(FONT_SIZE));
         LoadResetHint.getChildren().add(loadButton);
@@ -113,7 +113,7 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
                 lightOrDark += 1;
             }
         }
-        mainInterface.setTop(loadedFile);
+        mainInterface.setTop(gameStatus);
         mainInterface.setBottom(LoadResetHint);
         mainInterface.setCenter(chessBoard);
         Scene scene = new Scene(mainInterface);
