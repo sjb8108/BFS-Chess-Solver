@@ -10,12 +10,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import puzzles.common.Observer;
 import puzzles.chess.model.ChessModel;
 import puzzles.hoppers.model.HoppersModel;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 public class ChessGUI extends Application implements Observer<ChessModel, String> {
     private ChessModel model;
@@ -28,6 +31,7 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
     private String filename;
 
     private Stage stage;
+    private Label statusLabel;
 
     /** The resources directory is located directly underneath the gui package */
     private final static String RESOURCES_DIR = "resources/";
@@ -62,18 +66,31 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
         HBox gameStatus = new HBox();
         HBox LoadResetHint = new HBox();
         GridPane chessBoard = new GridPane();
-        Label statusLabel = new Label();
-        statusLabel.setText("Loaded: "+filename);
-        statusLabel.setFont(new Font(FONT_SIZE));
+        this.statusLabel = new Label();
+        this.statusLabel.setText("Loaded: "+filename);
+        this.statusLabel.setFont(new Font(FONT_SIZE));
         gameStatus.getChildren().add(statusLabel);
         gameStatus.setAlignment(Pos.CENTER);
         Button loadButton = new Button("Load");
+        loadButton.setOnAction(event -> {
+            FileChooser chooser = new FileChooser();
+            String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+            currentPath += File.separator + "data" + File.separator + "chess";  // or "hoppers"
+            chooser.setInitialDirectory(new File(currentPath));
+            this.model.newGame(currentPath);
+        });
         loadButton.setFont(new Font(FONT_SIZE));
         LoadResetHint.getChildren().add(loadButton);
         Button resetButton = new Button("Reset");
+        resetButton.setOnAction(event -> {
+            this.model.restart();
+        });
         resetButton.setFont(new Font(FONT_SIZE));
         LoadResetHint.getChildren().add(resetButton);
         Button hintButton = new Button("Hint");
+        hintButton.setOnAction(event -> {
+            this.model.useHint();
+        });
         hintButton.setFont(new Font(FONT_SIZE));
         LoadResetHint.getChildren().add(hintButton);
         LoadResetHint.setAlignment(Pos.CENTER);
@@ -106,6 +123,11 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
                 }
                 b.setMinSize(ICON_SIZE, ICON_SIZE);
                 b.setMaxSize(ICON_SIZE, ICON_SIZE);
+                int finalRow = row1;
+                int finalCol = col1;
+                b.setOnAction(event -> {
+                    this.model.selectPieces(finalRow -1, finalCol -1);
+                });
                 chessBoard.add(b,col1, row1);
                 arrayOfButtons[row1-1][col1-1] = b;
             }
@@ -123,7 +145,28 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
 
     @Override
     public void update(ChessModel chessModel, String msg) {
-
+        this.statusLabel.setText(msg);
+        String[][] updatedChessBoard = this.model.getCurrentConfig().getChessBoard();
+        for (int i = 0; i < this.model.getCurrentConfig().getRowdim(); i++){
+            for (int j = 0; j < this.model.getCurrentConfig().getColdim(); j++){
+                String updatedPiece = updatedChessBoard[i][j];
+                if (updatedPiece.equals(".")){
+                    arrayOfButtons[i][j].setGraphic(null);
+                } else if (updatedPiece.equals("P")) {
+                    arrayOfButtons[i][j].setGraphic(new ImageView(pawn));
+                } else if (updatedPiece.equals("N")) {
+                    arrayOfButtons[i][j].setGraphic(new ImageView(knight));
+                } else if (updatedPiece.equals("K")) {
+                    arrayOfButtons[i][j].setGraphic(new ImageView(king));
+                } else if (updatedPiece.equals("R")) {
+                    arrayOfButtons[i][j].setGraphic(new ImageView(rook));
+                } else if (updatedPiece.equals("B")) {
+                    arrayOfButtons[i][j].setGraphic(new ImageView(bishop));
+                } else if (updatedPiece.equals("Q")) {
+                    arrayOfButtons[i][j].setGraphic(new ImageView(queen));
+                }
+            }
+        }
         this.stage.sizeToScene();  // when a different sized puzzle is loaded
     }
 

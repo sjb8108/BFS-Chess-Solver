@@ -149,7 +149,7 @@ public class ChessModel {
         this.selectedPiece = "";
         this.selectedRow = 0;
         this.selectedCol = 0;
-        alertObservers("Puzzle Restart!");
+        alertObservers("Puzzle Reset!");
     }
     public void selectPieces(int row, int col){
         String[][] board = this.currentConfig.getChessBoard();
@@ -166,6 +166,7 @@ public class ChessModel {
         } else {
             if (board[row][col].equals(".")){
                 alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                this.captureOrNot = 1;
             } else{
                 if (this.selectedPiece.equals("P")){
                     if(checkPawns(row, col) == true){
@@ -177,6 +178,7 @@ public class ChessModel {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
                     } else{
+                        this.captureOrNot = 1;
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
                 } else if (this.selectedPiece.equals("N")) {
@@ -189,6 +191,7 @@ public class ChessModel {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
                     } else{
+                        this.captureOrNot = 1;
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
                 } else if (this.selectedPiece.equals("K")) {
@@ -201,6 +204,7 @@ public class ChessModel {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
                     } else{
+                        this.captureOrNot = 1;
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
                 } else if (this.selectedPiece.equals("R")) {
@@ -213,6 +217,7 @@ public class ChessModel {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
                     } else{
+                        this.captureOrNot = 1;
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
                 } else if (this.selectedPiece.equals("B")) {
@@ -225,6 +230,7 @@ public class ChessModel {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
                     } else{
+                        this.captureOrNot = 1;
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
                 } else {
@@ -237,6 +243,7 @@ public class ChessModel {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
                     } else{
+                        this.captureOrNot = 1;
                         alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
                     }
                 }
