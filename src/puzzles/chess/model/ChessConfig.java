@@ -91,9 +91,24 @@ public class ChessConfig implements Configuration {
     public String toString() {
         List<String> listOfStringRow = new ArrayList<>();
         String chessString = "";
+        String stringRowOne = "   ";
+        for (int i = 0; i < coldim; i++){
+            stringRowOne+=(i + " ");
+        }
+        String stringRowTwo = "  ";
+        for (int i = 0; i < 2*coldim; i++){
+            stringRowTwo+="-";
+        }
+        listOfStringRow.add(stringRowOne);
+        listOfStringRow.add(stringRowTwo);
+        int counter = 0;
         for (int i = 0; i<rowdim; i++) {
             String stringRow = "";
             for (int j = 0; j<coldim; j++) {
+                if (j ==0){
+                    stringRow+=(counter +"| ");
+                    counter+=1;
+                }
                 stringRow+=chessBoard[i][j] + " ";
             }
             listOfStringRow.add(stringRow);

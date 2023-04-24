@@ -88,13 +88,8 @@ public class ChessModel {
                     chessBoard[i][j] = chessSpot;
                 }
             }
-            for (int i = 0; i < rowdim; i++) {
-                for (int j = 0; j < coldim; j++) {
-                    System.out.print(chessBoard[i][j] + " ");
-                }
-                System.out.println();
-            }
             this.currentConfig = new ChessConfig(chessBoard);
+            System.out.println(this.currentConfig.toString());
             this.initalConfigForRestart = currentConfig;
             this.captureOrNot = 1;
             this.selectedPiece = "";
