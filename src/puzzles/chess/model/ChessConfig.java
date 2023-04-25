@@ -1,32 +1,50 @@
 package puzzles.chess.model;
-
-import puzzles.clock.ClockConfig;
 import puzzles.common.solver.Configuration;
-
 import java.util.*;
-
+/**
+ * A representation of one layout of a chessboard/
+ * chess config
+ */
 public class ChessConfig implements Configuration {
     private String[][] chessBoard;
     private int rowdim;
     private int coldim;
+    /**
+     * Makes the chessboard and sets the dimensions
+     * @param chessBoard a 2D array of strings that represent the pieces
+     *                  of a chess board and where they are located
+     */
     public ChessConfig(String[][] chessBoard) {
         this.chessBoard = chessBoard;
         rowdim = chessBoard.length;
         coldim = chessBoard[0].length;
     }
-
+    /**
+     * Gets and return the chessbaord
+     * @return the chessboard
+     */
     public String[][] getChessBoard() {
         return chessBoard;
     }
-
+    /**
+     * Gets and returns the row dimension number
+     * @return the row dimension
+     */
     public int getRowdim() {
         return rowdim;
     }
-
+    /**
+     * Gets and returns the column dimension number
+     * @return the column dimension
+     */
     public int getColdim() {
         return coldim;
     }
-
+    /**
+     * Checks to see if the current configuration
+     * is the solution to the puzzle
+     * @return true if the puzzle is finished and false if not
+     */
     @Override
     public boolean isSolution() {
         int pieceCount = 0;
@@ -42,7 +60,12 @@ public class ChessConfig implements Configuration {
         }
         return false;
     }
-
+    /**
+     * Goes through the chess board and gets configs
+     * that happen when a piece captures another piece
+     * @return A set of chess configs that could happen
+     * when a piece moves and captures
+     */
     @Override
     public Collection<Configuration> getNeighbors() {
         Set neighbors = new LinkedHashSet<ChessConfig>();
@@ -65,6 +88,11 @@ public class ChessConfig implements Configuration {
         }
         return neighbors;
     }
+    /**
+     * Sees if a chess config the same as another chess config
+     * @param other the other chess config to be compared
+     * @return true if the objects are equal and false if not
+     */
     @Override
     public boolean equals(Object other){
         if(!(other instanceof ChessConfig)) {
@@ -83,10 +111,18 @@ public class ChessConfig implements Configuration {
             return true;
         }
     }
+    /**
+     * Coverts the chess config into hash code
+     * @return the hash coded chess config
+     */
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(chessBoard);
     }
+    /**
+     * A string representation of a chess config
+     * @return the string representation of the chess config
+     */
     @Override
     public String toString() {
         List<String> listOfStringRow = new ArrayList<>();
@@ -118,6 +154,15 @@ public class ChessConfig implements Configuration {
         }
         return chessString;
     }
+    /**
+     * Makes a chess board after a piece get cpatures
+     * @param startRow - the row of the piece being moved
+     * @param startCol - the column of the piece being moved
+     * @param endRow - the row of the piece getting captured
+     * @param endCol - the column of the piece getting captured
+     * @param piece - the piece being moved
+     * @return
+     */
     public String[][] makeNeighbor(int startRow, int startCol, int endRow, int endCol, String piece){
         String[][] newChessBoard = new String[rowdim][coldim];
         for (int i = 0; i<rowdim; i++) {
@@ -133,6 +178,12 @@ public class ChessConfig implements Configuration {
         }
         return newChessBoard;
     }
+    /**
+     * Gets the configs dealing when a pawn captures another piece
+     * @param row - the row of where the pawn is located
+     * @param col - the column of where the pawn is located
+     * @return a list of configs that deal with when a pawn captures a piece
+     */
     public Collection<Configuration> getPawnNeighbors(int row, int col){
         Set pawnNeighbors = new LinkedHashSet<ChessConfig>();
         try{
@@ -150,6 +201,12 @@ public class ChessConfig implements Configuration {
         } catch (IndexOutOfBoundsException e){}
         return pawnNeighbors;
     }
+    /**
+     * Gets the configs dealing when a knight captures another piece
+     * @param row - the row of where the knight is located
+     * @param col - the column of where the knight is located
+     * @return a list of configs that deal with when a knight captures a piece
+     */
     public Collection<Configuration> getKnightNeighbors(int row, int col){
         Set knightNeighbors = new LinkedHashSet<ChessConfig>();
         try{
@@ -202,6 +259,12 @@ public class ChessConfig implements Configuration {
         } catch (IndexOutOfBoundsException e){}
         return knightNeighbors;
     }
+    /**
+     * Gets the configs dealing when a king captures another piece
+     * @param row - the row of where the king is located
+     * @param col - the column of where the king is located
+     * @return a list of configs that deal with when a king captures a piece
+     */
     public Collection<Configuration> getKingNeighbors(int row, int col){
         Set kingNeighbors = new LinkedHashSet<ChessConfig>();
         try{
@@ -254,6 +317,12 @@ public class ChessConfig implements Configuration {
         } catch (IndexOutOfBoundsException e){}
         return kingNeighbors;
     }
+    /**
+     * Gets the configs dealing when a rook captures another piece
+     * @param row - the row of where the rook is located
+     * @param col - the column of where the rook is located
+     * @return a list of configs that deal with when a rook captures a piece
+     */
     public Collection<Configuration> getRookNeighbors(int row, int col){
         Set rookNeighbors = new LinkedHashSet<ChessConfig>();
         for(int i = row-1; i>=0; i-=1){
@@ -286,6 +355,12 @@ public class ChessConfig implements Configuration {
         }
         return rookNeighbors;
     }
+    /**
+     * Gets the configs dealing when a bishop captures another piece
+     * @param row - the row of where the bishop is located
+     * @param col - the column of where the bishop is located
+     * @return a list of configs that deal with when a bishop captures a piece
+     */
     public Collection<Configuration> getBishopNeighbors(int row, int col){
         Set bishopNeighbors = new LinkedHashSet<ChessConfig>();
         int dummyrow = row+1;
@@ -334,6 +409,12 @@ public class ChessConfig implements Configuration {
         }
         return bishopNeighbors;
     }
+    /**
+     * Gets the configs dealing when a queen captures another piece
+     * @param row - the row of where the queen is located
+     * @param col - the column of where the queen is located
+     * @return a list of configs that deal with when a queen captures a piece
+     */
     public Collection<Configuration> getQueenNeighbors(int row, int col) {
         Set queenNeighbors = new LinkedHashSet<ChessConfig>();
         queenNeighbors.addAll(getRookNeighbors(row, col));

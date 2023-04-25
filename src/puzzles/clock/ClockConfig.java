@@ -5,7 +5,10 @@ import puzzles.common.solver.Configuration;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+/**
+ * A single representation of a clock that uses
+ * methods from the configuration interface
+ */
 public class ClockConfig implements Configuration{
     private final String hours;
     private String current;

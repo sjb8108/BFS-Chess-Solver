@@ -1,14 +1,13 @@
 package puzzles.chess.model;
-
 import puzzles.common.Observer;
 import puzzles.common.solver.Configuration;
-import puzzles.common.solver.Solver;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-
+/**
+ * The model for the chess game
+ */
 public class ChessModel {
     /** the collection of observers of this model */
     private final List<Observer<ChessModel, String>> observers = new LinkedList<>();
@@ -22,7 +21,6 @@ public class ChessModel {
     private String selectedPiece;
     private int selectedRow;
     private int selectedCol;
-
     /**
      * The view calls this to add itself as an observer.
      *
@@ -31,7 +29,6 @@ public class ChessModel {
     public void addObserver(Observer<ChessModel, String> observer) {
         this.observers.add(observer);
     }
-
     /**
      * The model's state has changed (the counter), so inform the view via
      * the update method
@@ -41,7 +38,12 @@ public class ChessModel {
             observer.update(this, data);
         }
     }
-
+    /**
+     * Makes the model for the PTUI and GUI
+     * @param filename the name of the file where
+     *                 the initial chess config is stored
+     * @throws IOException
+     */
     public ChessModel(String filename) throws IOException {
         BufferedReader chessLoader = new BufferedReader(new FileReader(filename));
         String[] dims = chessLoader.readLine().split(" ");
@@ -65,11 +67,18 @@ public class ChessModel {
         this.selectedRow = 0;
         this.selectedCol = 0;
     }
-
+    /**
+     * Gets and returns the current chess config
+     * @return the current chess config
+     */
     public ChessConfig getCurrentConfig() {
         return currentConfig;
     }
-
+    /**
+     * Makes a new game by loading in the filename and replacing
+     * fields with updated and correct values of the new loaded file
+     * @param filename
+     */
     public void newGame(String filename) {
         try {
             BufferedReader chessLoader = new BufferedReader(new FileReader(filename));
@@ -100,6 +109,9 @@ public class ChessModel {
             alertObservers("Failed to load: "+filename);
         }
     }
+    /**
+     * Gives a hint to the user by providing the next movement to solve the puzzle
+     */
     public void useHint(){
         Map<Configuration, Configuration> predecessor = new HashMap<>();
         Configuration startConfig;
@@ -131,13 +143,16 @@ public class ChessModel {
             ChessConfig hintConfig = (ChessConfig) path.get(1);
             this.currentConfig = hintConfig;
             if (this.currentConfig.isSolution() == true){
-                alertObservers("Complete");
+                alertObservers("You finished the puzzle!");
             } else {
                 alertObservers("Next Step!");
             }
             this.captureOrNot = 1;
         }
     }
+    /**
+     * Restarts the puzzle to the initial state
+     */
     public void restart(){
         this.currentConfig = this.initalConfigForRestart;
         this.captureOrNot = 1;
@@ -146,6 +161,14 @@ public class ChessModel {
         this.selectedCol = 0;
         alertObservers("Puzzle Reset!");
     }
+    /**
+     * Sees if when the user picks out a row and col if the user
+     * can progress the puzzle game. Whether selecting an empty space
+     * or trying to move a chess piece illegally can halt the progress
+     * of the game
+     * @param row the row the user selected
+     * @param col the column the user selected
+     */
     public void selectPieces(int row, int col){
         String[][] board = this.currentConfig.getChessBoard();
         if (this.captureOrNot % 2== 1){
@@ -168,7 +191,7 @@ public class ChessModel {
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
                         if (this.currentConfig.isSolution() == true){
-                            alertObservers("Complete");
+                            alertObservers("You finished the puzzle!");
                         } else {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
@@ -181,7 +204,7 @@ public class ChessModel {
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
                         if (this.currentConfig.isSolution() == true){
-                            alertObservers("Complete");
+                            alertObservers("You finished the puzzle!");
                         } else {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
@@ -194,7 +217,7 @@ public class ChessModel {
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
                         if (this.currentConfig.isSolution() == true){
-                            alertObservers("Complete");
+                            alertObservers("You finished the puzzle!");
                         } else {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
@@ -207,7 +230,7 @@ public class ChessModel {
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
                         if (this.currentConfig.isSolution() == true){
-                            alertObservers("Complete");
+                            alertObservers("You finished the puzzle!");
                         } else {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
@@ -220,7 +243,7 @@ public class ChessModel {
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
                         if (this.currentConfig.isSolution() == true){
-                            alertObservers("Complete");
+                            alertObservers("You finished the puzzle!");
                         } else {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
@@ -233,7 +256,7 @@ public class ChessModel {
                         this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
                         this.captureOrNot = 1;
                         if (this.currentConfig.isSolution() == true){
-                            alertObservers("Complete");
+                            alertObservers("You finished the puzzle!");
                         } else {
                             alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
@@ -245,6 +268,13 @@ public class ChessModel {
             }
         }
     }
+    /**
+     * Sees if the pawns movement is legal
+     * @param row the row of the pawn
+     * @param col the column of the pawn
+     * @return true if the pawn can move the selected
+     * row and column false if not
+     */
     public boolean checkPawns(int row, int col){
         if (row == selectedRow-1 && col == selectedCol+1){
             return true;
@@ -254,6 +284,13 @@ public class ChessModel {
         }
         return false;
     }
+    /**
+     * Sees if the kings movement is legal
+     * @param row the row of the king
+     * @param col the column of the king
+     * @return true if the king can move the selected
+     * row and column false if not
+     */
     public boolean checkKings(int row, int col){
         if(row == selectedRow-1 && col == selectedCol){
             return true;
@@ -286,6 +323,13 @@ public class ChessModel {
         }
         return false;
     }
+    /**
+     * Sees if the knights movement is legal
+     * @param row the row of the knight
+     * @param col the column of the knight
+     * @return true if the knight can move the selected
+     * row and column false if not
+     */
     public boolean checkKnights(int row, int col){
         if (row == selectedRow-2 && col == selectedCol-1){
             return true;
@@ -313,6 +357,13 @@ public class ChessModel {
         }
         return false;
     }
+    /**
+     * Sees if the rooks movement is legal
+     * @param row the row of the rook
+     * @param col the column of the rook
+     * @return true if the rook can move the selected
+     * row and column false if not
+     */
     public boolean checkRooks(int row, int col){
         if (selectedRow-row > 0 && col == selectedCol){
             for(int i = selectedRow-1; i>=0; i-=1){
@@ -356,6 +407,13 @@ public class ChessModel {
         }
         return false;
     }
+    /**
+     * Sees if the bishops movement is legal
+     * @param row the row of the bishop
+     * @param col the column of the bishop
+     * @return true if the bishop can move the selected
+     * row and column false if not
+     */
     public boolean checkBishops(int row, int col){
         int dummyrow;
         int dummycol;
@@ -417,6 +475,13 @@ public class ChessModel {
         }
         return false;
     }
+    /**
+     * Sees if the queens movement is legal
+     * @param row the row of the queen
+     * @param col the column of the queen
+     * @return true if the queen can move the selected
+     * row and column false if not
+     */
     public boolean checkQueen(int row, int col){
         if (selectedRow-row > 0 && col == selectedCol){
             for(int i = selectedRow-1; i>=0; i-=1){

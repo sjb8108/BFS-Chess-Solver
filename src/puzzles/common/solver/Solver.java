@@ -1,8 +1,17 @@
 package puzzles.common.solver;
 
 import java.util.*;
-
+/**
+ * BFS implementation of Conifuration.java interface objects
+ */
 public class Solver {
+    /**
+     * Implements a BFS on any type of object that
+     * implements the Configuration.java interface
+     * @param start the starting configuration of the interface object
+     * @return a list of config object that show the order of how it
+     * got from the start to end config in the least amount of configs
+     */
     public static List<Configuration> solve(Configuration start){
         Map<Configuration, Configuration> predecessor = new HashMap<>();
         Configuration startConfig;

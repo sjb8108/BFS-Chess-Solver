@@ -1,14 +1,18 @@
 package puzzles.chess.ptui;
-
 import puzzles.common.Observer;
 import puzzles.chess.model.ChessModel;
-
 import java.io.IOException;
 import java.util.Scanner;
-
+/**
+ * The chess puzzle game in view of a plain text user interface
+ */
 public class ChessPTUI implements Observer<ChessModel, String> {
     private ChessModel model;
-
+    /**
+     * Makes the model,prints the config,adds an observer,and displays the commands
+     * @param filename the name of the file where the initial chess config is
+     * @throws IOException
+     */
     public void init(String filename) throws IOException {
         this.model = new ChessModel(filename);
         System.out.println("Loaded: "+filename);
@@ -16,7 +20,12 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         this.model.addObserver(this);
         displayHelp();
     }
-
+    /**
+     * Updates the PTUI by displaying messages depending on what the user does
+     * @param model the object that wishes to inform this object
+     *                about something that has happened.
+     * @param data optional data the server.model can send to the observer
+     */
     @Override
     public void update(ChessModel model, String data) {
         if (data.equals("Complete")){
@@ -29,7 +38,9 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         }
 
     }
-
+    /**
+     * Prints out the list of commands to help the user play the game
+     */
     private void displayHelp() {
         System.out.println( "h(int)              -- hint next move" );
         System.out.println( "l(oad) filename     -- load new puzzle file" );
@@ -37,7 +48,10 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         System.out.println( "q(uit)              -- quit the game" );
         System.out.println( "r(eset)             -- reset the current game" );
     }
-
+    /**
+     * Runs the game and is the controller for the user
+     * @throws IOException
+     */
     public void run() throws IOException {
         Scanner in = new Scanner( System.in );
         while(true) {
@@ -62,6 +76,10 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         }
     }
 
+    /**
+     * Makes the PTUI and calls init and calls the run fuction
+     * @param args - has the filename at position 0
+     */
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage: java ChessPTUI filename");
@@ -76,4 +94,3 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         }
     }
 }
-

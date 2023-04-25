@@ -5,7 +5,10 @@ import puzzles.common.solver.Configuration;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
+/**
+ * A single representation of a string that uses
+ * methods from the configuration interface
+ */
 public class StringsConfig implements Configuration {
     private String current;
     private final String end;

@@ -1,5 +1,4 @@
 package puzzles.chess.gui;
-
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -14,50 +13,55 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import puzzles.common.Observer;
 import puzzles.chess.model.ChessModel;
-import puzzles.hoppers.model.HoppersModel;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
-
+/**
+ * The graphical user interface to the chess game model
+ */
 public class ChessGUI extends Application implements Observer<ChessModel, String> {
     private ChessModel model;
     private Button[][] arrayOfButtons;
-
     /** The size of all icons, in square dimension */
     private final static int ICON_SIZE = 75;
     /** the font size for labels and buttons */
     private final static int FONT_SIZE = 12;
     private String filename;
-
     private Stage stage;
     private Label statusLabel;
-
     /** The resources directory is located directly underneath the gui package */
     private final static String RESOURCES_DIR = "resources/";
-
-    // for demonstration purposes
     private Image bishop = new Image(getClass().getResourceAsStream(RESOURCES_DIR+"bishop.png"));
     private Image pawn = new Image(getClass().getResourceAsStream(RESOURCES_DIR+"pawn.png"));
     private Image knight = new Image(getClass().getResourceAsStream(RESOURCES_DIR+"knight.png"));
     private Image rook = new Image(getClass().getResourceAsStream(RESOURCES_DIR+"rook.png"));
     private Image king = new Image(getClass().getResourceAsStream(RESOURCES_DIR+"king.png"));
     private Image queen = new Image(getClass().getResourceAsStream(RESOURCES_DIR+"queen.png"));
-
     /** a definition of light and dark and for the button backgrounds */
     private static final Background LIGHT =
             new Background( new BackgroundFill(Color.WHITE, null, null));
     private static final Background DARK =
             new Background( new BackgroundFill(Color.MIDNIGHTBLUE, null, null));
-
+    /**
+     * Gets the filename and makes the model with
+     * the filename and adds an observer
+     * @throws IOException
+     */
     @Override
     public void init() throws IOException {
-        // get the file name from the command line
         this.filename = getParameters().getRaw().get(0);
         this.model = new ChessModel(this.filename);
         model.addObserver(this);
     }
-
+    /**
+     * Makes all the componets of the GUI, the chessboard, buttons,
+     * and labels and sets up there action commands
+     * @param stage the primary stage for this application, onto which
+     * the application scene can be set.
+     * Applications may create other stages, if needed, but they will not be
+     * primary stages.
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
@@ -142,7 +146,13 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
         stage.setScene(scene);
         stage.show();
     }
-
+    /**
+     * Updates the GUI chessboard and label when the user interacts with
+     * the buttons or the chess board
+     * @param chessModel the object that wishes to inform this object
+     *                about something that has happened.
+     * @param msg optional data the server.model can send to the observer
+     */
     @Override
     public void update(ChessModel chessModel, String msg) {
         this.statusLabel.setText(msg);
@@ -167,9 +177,12 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
                 }
             }
         }
-        this.stage.sizeToScene();  // when a different sized puzzle is loaded
+        this.stage.sizeToScene();
     }
-
+    /**
+     * Lauches the GUI
+     * @param args the filename is stored in position 0
+     */
     public static void main(String[] args) {
         Application.launch(args);
     }
