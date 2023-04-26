@@ -71,7 +71,8 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
         HBox LoadResetHint = new HBox();
         GridPane chessBoard = new GridPane();
         this.statusLabel = new Label();
-        this.statusLabel.setText("Loaded: "+filename);
+        String[] fileString = this.filename.split("/");
+        this.statusLabel.setText("Loaded: "+fileString[2]);
         this.statusLabel.setFont(new Font(FONT_SIZE));
         gameStatus.getChildren().add(statusLabel);
         gameStatus.setAlignment(Pos.CENTER);
@@ -79,9 +80,10 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
         loadButton.setOnAction(event -> {
             FileChooser chooser = new FileChooser();
             String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-            currentPath += File.separator + "data" + File.separator + "chess";  // or "hoppers"
+            currentPath += File.separator + "data" + File.separator + "chess";
             chooser.setInitialDirectory(new File(currentPath));
-            this.model.newGame(currentPath);
+            File filechoosen = chooser.showOpenDialog(stage);
+            this.model.newGame(filechoosen.toString());
         });
         loadButton.setFont(new Font(FONT_SIZE));
         LoadResetHint.getChildren().add(loadButton);
@@ -155,28 +157,87 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
      */
     @Override
     public void update(ChessModel chessModel, String msg) {
+        this.arrayOfButtons = new Button[this.model.getCurrentConfig().getRowdim()][this.model.getCurrentConfig().getColdim()];
+        BorderPane mainInterface = new BorderPane();
+        HBox gameStatus = new HBox();
+        HBox LoadResetHint = new HBox();
+        GridPane chessBoard = new GridPane();
+        this.statusLabel = new Label();
         this.statusLabel.setText(msg);
-        String[][] updatedChessBoard = this.model.getCurrentConfig().getChessBoard();
-        for (int i = 0; i < this.model.getCurrentConfig().getRowdim(); i++){
-            for (int j = 0; j < this.model.getCurrentConfig().getColdim(); j++){
-                String updatedPiece = updatedChessBoard[i][j];
-                if (updatedPiece.equals(".")){
-                    arrayOfButtons[i][j].setGraphic(null);
-                } else if (updatedPiece.equals("P")) {
-                    arrayOfButtons[i][j].setGraphic(new ImageView(pawn));
-                } else if (updatedPiece.equals("N")) {
-                    arrayOfButtons[i][j].setGraphic(new ImageView(knight));
-                } else if (updatedPiece.equals("K")) {
-                    arrayOfButtons[i][j].setGraphic(new ImageView(king));
-                } else if (updatedPiece.equals("R")) {
-                    arrayOfButtons[i][j].setGraphic(new ImageView(rook));
-                } else if (updatedPiece.equals("B")) {
-                    arrayOfButtons[i][j].setGraphic(new ImageView(bishop));
-                } else if (updatedPiece.equals("Q")) {
-                    arrayOfButtons[i][j].setGraphic(new ImageView(queen));
+        this.statusLabel.setFont(new Font(FONT_SIZE));
+        gameStatus.getChildren().add(statusLabel);
+        gameStatus.setAlignment(Pos.CENTER);
+        Button loadButton = new Button("Load");
+        loadButton.setOnAction(event -> {
+            FileChooser chooser = new FileChooser();
+            String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
+            currentPath += File.separator + "data" + File.separator + "chess";
+            chooser.setInitialDirectory(new File(currentPath));
+            File filechoosen = chooser.showOpenDialog(stage);
+            this.model.newGame(filechoosen.toString());
+        });
+        loadButton.setFont(new Font(FONT_SIZE));
+        LoadResetHint.getChildren().add(loadButton);
+        Button resetButton = new Button("Reset");
+        resetButton.setOnAction(event -> {
+            this.model.restart();
+        });
+        resetButton.setFont(new Font(FONT_SIZE));
+        LoadResetHint.getChildren().add(resetButton);
+        Button hintButton = new Button("Hint");
+        hintButton.setOnAction(event -> {
+            this.model.useHint();
+        });
+        hintButton.setFont(new Font(FONT_SIZE));
+        LoadResetHint.getChildren().add(hintButton);
+        LoadResetHint.setAlignment(Pos.CENTER);
+        int row1;
+        int col1;
+        int lightOrDark = 0;
+        for ( row1 = 1; row1 <= this.model.getCurrentConfig().getRowdim(); ++row1 ) {
+            for (col1 = 1; col1 <= this.model.getCurrentConfig().getColdim(); col1++) {
+                Button b = new Button();
+                String piece = this.model.getCurrentConfig().getChessBoard()[row1-1][col1-1];
+                if (piece.equals("P")){
+                    b.setGraphic(new ImageView(pawn));
+                } else if (piece.equals("N")) {
+                    b.setGraphic(new ImageView(knight));
+                } else if (piece.equals("K")) {
+                    b.setGraphic(new ImageView(king));
+                } else if (piece.equals("R")) {
+                    b.setGraphic(new ImageView(rook));
+                } else if (piece.equals("B")) {
+                    b.setGraphic(new ImageView(bishop));
+                } else if (piece.equals("Q")) {
+                    b.setGraphic(new ImageView(queen));
                 }
+                if(lightOrDark % 2 == 0){
+                    b.setBackground(LIGHT);
+                    lightOrDark+=1;
+                } else {
+                    b.setBackground(DARK);
+                    lightOrDark+=1;
+                }
+                b.setMinSize(ICON_SIZE, ICON_SIZE);
+                b.setMaxSize(ICON_SIZE, ICON_SIZE);
+                int finalRow = row1;
+                int finalCol = col1;
+                b.setOnAction(event -> {
+                    this.model.selectPieces(finalRow -1, finalCol -1);
+                });
+                chessBoard.add(b,col1, row1);
+                arrayOfButtons[row1-1][col1-1] = b;
+            }
+            if (this.model.getCurrentConfig().getColdim() % 2 == 0) {
+                lightOrDark += 1;
             }
         }
+        mainInterface.setTop(gameStatus);
+        mainInterface.setBottom(LoadResetHint);
+        mainInterface.setCenter(chessBoard);
+        Scene scene = new Scene(mainInterface);
+        stage.setScene(scene);
+        stage.show();
         this.stage.sizeToScene();
     }
     /**

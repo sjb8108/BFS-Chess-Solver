@@ -2,9 +2,12 @@ package puzzles.chess.model;
 import puzzles.common.Observer;
 import puzzles.common.solver.Configuration;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
+import java.util.regex.Pattern;
+
 /**
  * The model for the chess game
  */
@@ -82,7 +85,6 @@ public class ChessModel {
     public void newGame(String filename) {
         try {
             BufferedReader chessLoader = new BufferedReader(new FileReader(filename));
-            System.out.println("Loaded: " + filename);
             String[] dims = chessLoader.readLine().split(" ");
             int rowdim = Integer.parseInt(dims[0]);
             int coldim = Integer.parseInt(dims[1]);
@@ -98,13 +100,18 @@ public class ChessModel {
                 }
             }
             this.currentConfig = new ChessConfig(chessBoard);
-            System.out.println(this.currentConfig.toString());
             this.initalConfigForRestart = currentConfig;
             this.captureOrNot = 1;
             this.selectedPiece = "";
             this.selectedRow = 0;
             this.selectedCol = 0;
-            alertObservers("new game");
+            String[] fileDirectory = filename.split("/");
+            if (filename.contains("project")){
+                fileDirectory = filename.split(Pattern.quote(File.separator));// Not working
+                alertObservers("Loaded: "+fileDirectory[fileDirectory.length-1]);
+            } else{
+                alertObservers("Loaded: " + fileDirectory[2]);
+            }
         }catch (IOException e){
             alertObservers("Failed to load: "+filename);
         }
@@ -113,41 +120,44 @@ public class ChessModel {
      * Gives a hint to the user by providing the next movement to solve the puzzle
      */
     public void useHint(){
-        Map<Configuration, Configuration> predecessor = new HashMap<>();
-        Configuration startConfig;
-        startConfig = this.currentConfig;
-        predecessor.put(startConfig, null);
-        Queue<Configuration> toVisit = new LinkedList<>();
-        toVisit.offer(startConfig);
-        while (!toVisit.isEmpty() && !toVisit.peek().isSolution()) {
-            Configuration current = toVisit.remove();
-            for (Configuration neighbors : current.getNeighbors()) {
-                if (!(predecessor.containsKey(neighbors))) {
-                    predecessor.put(neighbors, current);
-                    toVisit.offer(neighbors);
+        if (this.currentConfig.isSolution() == true){
+            alertObservers("You finished the puzzle!");
+        } else {
+            Map<Configuration, Configuration> predecessor = new HashMap<>();
+            Configuration startConfig;
+            startConfig = this.currentConfig;
+            predecessor.put(startConfig, null);
+            Queue<Configuration> toVisit = new LinkedList<>();
+            toVisit.offer(startConfig);
+            while (!toVisit.isEmpty() && !toVisit.peek().isSolution()) {
+                Configuration current = toVisit.remove();
+                for (Configuration neighbors : current.getNeighbors()) {
+                    if (!(predecessor.containsKey(neighbors))) {
+                        predecessor.put(neighbors, current);
+                        toVisit.offer(neighbors);
+                    }
                 }
             }
-        }
-        if ( toVisit.isEmpty() ) {
-            alertObservers("Puzzle is not solvable");
-        }
-        else {
-            Configuration finishConfig = toVisit.remove();
-            List<Configuration> path = new LinkedList<>();
-            path.add( 0, finishConfig );
-            Configuration node = predecessor.get( finishConfig );
-            while ( node != null ) {
-                path.add( 0, node );
-                node = predecessor.get( node );
-            }
-            ChessConfig hintConfig = (ChessConfig) path.get(1);
-            this.currentConfig = hintConfig;
-            if (this.currentConfig.isSolution() == true){
-                alertObservers("You finished the puzzle!");
+            if (toVisit.isEmpty()) {
+                alertObservers("Puzzle is not solvable");
             } else {
-                alertObservers("Next Step!");
+                Configuration finishConfig = toVisit.remove();
+                List<Configuration> path = new LinkedList<>();
+                path.add(0, finishConfig);
+                Configuration node = predecessor.get(finishConfig);
+                while (node != null) {
+                    path.add(0, node);
+                    node = predecessor.get(node);
+                }
+                ChessConfig hintConfig = (ChessConfig) path.get(1);
+                this.currentConfig = hintConfig;
+                if (this.currentConfig.isSolution() == true) {
+                    alertObservers("You finished the puzzle!");
+                } else {
+                    alertObservers("Next Step!");
+                }
+                this.captureOrNot = 1;
             }
-            this.captureOrNot = 1;
         }
     }
     /**

@@ -31,7 +31,9 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         if (data.equals("Complete")){
             System.out.println("You completed this puzzle!");
             System.out.println(model.getCurrentConfig().toString());
-        } else if (data.equals("new game")) {
+        } else if (data.contains("Loaded:")) {
+            System.out.println(data);
+            System.out.println(model.getCurrentConfig().toString());
         } else {
             System.out.println(data);
             System.out.println(model.getCurrentConfig().toString());
