@@ -2,15 +2,24 @@ package puzzles.hoppers.model;
 
 import puzzles.common.solver.Configuration;
 
-import java.io.IOException;
 import java.util.*;
 
-// TODO: implement your HoppersConfig for the common solver
+/**
+ * The HoppersConfig class used by Hoppers to represent a single configuration of the Hoppers puzzle.
+ * Implements the Configuration interface to allow use through Solver.java BFS implementation.
+ *
+ *  @author Maanav Contractor (mpc9618)
+ */
 
 public class HoppersConfig implements Configuration{
     private String[][] hopperBoard;
     private static int rowDim;
     private static int colDim;
+
+    /**
+     * Constructor for HoppersConfig
+     * @param hopperBoard 2d nested array representing a Hoppers board configuration
+     */
     public HoppersConfig(String[][] hopperBoard) {
         this.hopperBoard = hopperBoard;
         rowDim = hopperBoard.length;
@@ -118,8 +127,21 @@ public class HoppersConfig implements Configuration{
         return neighbors;
     }
 
-
-    public HoppersConfig makeNeighbor(int newRow, int newCol, int removeRow, int removeCol,
+    /**
+     * Helper function for getNeighbors()
+     * Creates a new HoppersConfig neighbor by moving a piece and removing the corresponding piece
+     *
+     * @param newRow Row value for moving piece
+     * @param newCol Column value for moving piece
+     * @param removeRow Row value for removed piece
+     * @param removeCol Column value for removed piece
+     * @param originalRow Row value for original location of moving piece
+     * @param originalCol Column value for original location of moving piece
+     * @param frog Type of frog being moved, G(reen) or R(ed)
+     * @return HoppersConfig representing new configuration
+     * @throws IndexOutOfBoundsException to be handled by getNeighbors
+     */
+    private HoppersConfig makeNeighbor(int newRow, int newCol, int removeRow, int removeCol,
                                       int originalRow, int originalCol, String frog) throws IndexOutOfBoundsException {
         String[][] newHopperBoard = new String[rowDim][colDim];
         for (int iRow = 0; iRow < rowDim; iRow++) {

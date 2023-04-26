@@ -5,6 +5,14 @@ import puzzles.hoppers.model.HoppersConfig;
 
 import java.io.*;
 
+/**
+ * The full representation of the Hoppers puzzle.
+ * Reads initial configuration from command line, and runs
+ * Solver to find the shortest solution.
+ *
+ *  @author Maanav Contractor (mpc9618)
+ */
+
 public class Hoppers {
     public static void main(String[] args) throws IOException {
         try {
@@ -35,6 +43,6 @@ public class Hoppers {
                 Solver.solve(initialConfig);
 
             }
-        } catch (Exception e) {System.out.println("Invalid file exception thrown");}
+        } catch (FileNotFoundException fnfe) {System.out.println("Invalid file exception thrown");}
     }
 }
