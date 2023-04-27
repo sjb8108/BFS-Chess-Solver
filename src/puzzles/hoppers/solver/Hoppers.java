@@ -31,15 +31,10 @@ public class Hoppers {
                         hopperBoard[iRow][iCol] = line[iCol];
                     }
                 }
-
-                System.out.println("File: " + args[0]);
-                for (int iRow = 0; iRow < rowDim; iRow++) {
-                    for (int iCol = 0; iCol < colDim; iCol++) {
-                        System.out.print(hopperBoard[iRow][iCol] + " ");
-                    }
-                    System.out.println();
-                }
                 HoppersConfig initialConfig = new HoppersConfig(hopperBoard);
+                System.out.println("File: " + args[0]);
+                System.out.println(initialConfig.toString());
+
                 Solver.solve(initialConfig);
 
             }

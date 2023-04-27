@@ -26,6 +26,14 @@ public class HoppersConfig implements Configuration{
         colDim = hopperBoard[0].length;
     }
 
+    /**
+     * Getter for hopperBoard
+     * @return hopperBoard
+     */
+    public String[][] getHopperBoard() {
+        return hopperBoard;
+    }
+
     @Override
     public boolean isSolution() {
         int redFrogCount = 0;
@@ -141,7 +149,7 @@ public class HoppersConfig implements Configuration{
      * @return HoppersConfig representing new configuration
      * @throws IndexOutOfBoundsException to be handled by getNeighbors
      */
-    private HoppersConfig makeNeighbor(int newRow, int newCol, int removeRow, int removeCol,
+    public HoppersConfig makeNeighbor(int newRow, int newCol, int removeRow, int removeCol,
                                       int originalRow, int originalCol, String frog) throws IndexOutOfBoundsException {
         String[][] newHopperBoard = new String[rowDim][colDim];
         for (int iRow = 0; iRow < rowDim; iRow++) {
@@ -183,8 +191,21 @@ public class HoppersConfig implements Configuration{
     @Override
     public String toString() {
         String finalString = "";
+
+        String firstRow = "   ";
+        for (int i = 0; i < colDim; i++) {
+            firstRow += i + " ";
+        }
+        finalString += firstRow + "\n";
+
+        String secondRow = "  ";
+        for (int i = 0; i < 2*colDim; i++) {
+            secondRow += "-";
+        }
+        finalString += secondRow + "\n";
+
         for (int iRow = 0; iRow < rowDim; iRow++) {
-            String rowString = "";
+            String rowString = iRow + "| ";
             for (int iCol = 0; iCol < colDim; iCol++) {
                 rowString += hopperBoard[iRow][iCol] + " ";
             }
@@ -194,5 +215,3 @@ public class HoppersConfig implements Configuration{
     }
 
 }
-
-
