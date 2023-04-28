@@ -13,8 +13,8 @@ import java.util.*;
 
 public class HoppersConfig implements Configuration{
     private String[][] hopperBoard;
-    private static int rowDim;
-    private static int colDim;
+    private int rowDim;
+    private int colDim;
 
     /**
      * Constructor for HoppersConfig
@@ -32,6 +32,14 @@ public class HoppersConfig implements Configuration{
      */
     public String[][] getHopperBoard() {
         return hopperBoard;
+    }
+
+    public int getColDim() {
+        return this.colDim;
+    }
+
+    public int getRowDim() {
+        return this.rowDim;
     }
 
     @Override

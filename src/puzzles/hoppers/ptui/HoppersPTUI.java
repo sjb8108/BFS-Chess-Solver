@@ -24,7 +24,7 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
             System.out.println("You completed the puzzle!");
             System.out.println(model.getCurrentConfig().toString());
         } else if (data.equals("new game")) {
-
+            System.out.println(model.getCurrentConfig().toString());
         } else {
             System.out.println(data);
             System.out.println(model.getCurrentConfig().toString());
