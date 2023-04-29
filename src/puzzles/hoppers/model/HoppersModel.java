@@ -99,7 +99,7 @@ public class HoppersModel {
 
     /**
      * Creates a new game by loading the passed filename
-     * @param baseFilename file being loaded
+     * @param filename file being loaded
      */
     public void load(String filename) {
         try {
@@ -142,7 +142,7 @@ public class HoppersModel {
 
     /**
      * Generates the hint for the next move by implementing a BFS to find the
-     * optimal solution. Sets current configuration to the hint found
+     * optimal solution path. Sets current configuration to the hint found
      */
     public void hint() {
         Map<Configuration, Configuration> predecessor = new HashMap<>();
@@ -187,7 +187,8 @@ public class HoppersModel {
     }
 
     /**
-     *
+     * Selects a piece and moves it if the selection is valid
+     * Handles both the first selection and the second selection
      * @param row user selected row
      * @param col user selected column
      */

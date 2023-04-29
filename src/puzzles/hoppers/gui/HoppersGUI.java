@@ -11,7 +11,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import puzzles.common.Observer;
-import puzzles.hoppers.model.HoppersConfig;
 import puzzles.hoppers.model.HoppersModel;
 
 import javafx.application.Application;
@@ -19,8 +18,15 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.MalformedInputException;
 import java.nio.file.Paths;
+
+/**
+ * The HoppersGUI class used to display a GUI of the Hoppers game
+ * Observes the HopperModel and uses JavaFX to build a display window
+ * Implements an MVC design
+ *
+ *  @author Maanav Contractor (mpc9618)
+ */
 
 public class HoppersGUI extends Application implements Observer<HoppersModel, String> {
     private HoppersModel model;
@@ -47,6 +53,10 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
     private HBox LoadResetHint;
 
 
+    /**
+     * Initialization function for JavaFX application
+     * @throws IOException
+     */
     public void init() throws IOException {
         this.filename = getParameters().getRaw().get(0);
         this.model = new HoppersModel(this.filename);
@@ -101,14 +111,11 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
             for (int iCol = 0; iCol < this.model.getCurrentConfig().getColDim(); iCol++) {
                 Button button = new Button();
                 String piece = this.model.getCurrentConfig().getHopperBoard()[iRow][iCol];
-                if (piece.equals("G")) {
-                    button.setGraphic(new ImageView(greenFrog));
-                } else if (piece.equals("R")) {
-                    button.setGraphic(new ImageView(redFrog));
-                } else if (piece.equals("*")) {
-                    button.setGraphic(new ImageView(water));
-                } else if (piece.equals(".")) {
-                    button.setGraphic(new ImageView(lilyPad));
+                switch (piece) {
+                    case "G" -> button.setGraphic(new ImageView(greenFrog));
+                    case "R" -> button.setGraphic(new ImageView(redFrog));
+                    case "*" -> button.setGraphic(new ImageView(water));
+                    case "." -> button.setGraphic(new ImageView(lilyPad));
                 }
 
                 button.setMinSize(ICON_SIZE,ICON_SIZE);
@@ -139,14 +146,11 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
             for (int iCol = 0; iCol < this.model.getCurrentConfig().getColDim(); iCol++) {
                 Button button = new Button();
                 String piece = this.model.getCurrentConfig().getHopperBoard()[iRow][iCol];
-                if (piece.equals("G")) {
-                    button.setGraphic(new ImageView(greenFrog));
-                } else if (piece.equals("R")) {
-                    button.setGraphic(new ImageView(redFrog));
-                } else if (piece.equals("*")) {
-                    button.setGraphic(new ImageView(water));
-                } else if (piece.equals(".")) {
-                    button.setGraphic(new ImageView(lilyPad));
+                switch (piece) {
+                    case "G" -> button.setGraphic(new ImageView(greenFrog));
+                    case "R" -> button.setGraphic(new ImageView(redFrog));
+                    case "*" -> button.setGraphic(new ImageView(water));
+                    case "." -> button.setGraphic(new ImageView(lilyPad));
                 }
 
                 button.setMinSize(ICON_SIZE, ICON_SIZE);
@@ -170,6 +174,10 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
         stage.show();
     }
 
+    /**
+     * Main function for HoppersGUI JavaFX Application
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage: java HoppersPTUI filename");

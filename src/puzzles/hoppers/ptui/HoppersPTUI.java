@@ -7,9 +7,22 @@ import puzzles.chess.ptui.ChessPTUI;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * The HoppersPIUI class used to display a PTUI of the Hoppers game
+ * Observes the HopperModel and prints information to the standard output
+ * Implements an MVC design
+ *
+ *  @author Maanav Contractor (mpc9618)
+ */
+
 public class HoppersPTUI implements Observer<HoppersModel, String> {
     private HoppersModel model;
 
+    /**
+     * Initialization function for the PTUI
+     * @param filename file being loaded
+     * @throws IOException
+     */
     public void init(String filename) throws IOException {
         this.model = new HoppersModel(filename);
         System.out.println("Loaded :" + filename);
@@ -31,6 +44,9 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
         }
     }
 
+    /**
+     * Displays help message to user, outlining all legal commands
+     */
     private void displayHelp() {
         System.out.println( "h(int)              -- hint next move" );
         System.out.println( "l(oad) filename     -- load new puzzle file" );
@@ -39,6 +55,9 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
         System.out.println( "r(eset)             -- reset the current game" );
     }
 
+    /**
+     * Run function called by main to start PTUI application
+     */
     public void run() {
         Scanner in = new Scanner( System.in );
         while (true) {
@@ -69,6 +88,11 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
             }
         }
 
+    /**
+     * Main function for HoppersPTUI
+     * Initializes the PTUI and runs it
+     * @param args command line arguments
+     */
     public static void main(String[] args) {
         if (args.length != 1) {
             System.out.println("Usage: java HoppersPTUI filename");

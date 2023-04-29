@@ -34,10 +34,18 @@ public class HoppersConfig implements Configuration{
         return hopperBoard;
     }
 
+    /**
+     * Getter for column dimension
+     * @return column dimension
+     */
     public int getColDim() {
         return this.colDim;
     }
 
+    /**
+     * Getter for row dimension
+     * @return row dimension
+     */
     public int getRowDim() {
         return this.rowDim;
     }
