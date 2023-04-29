@@ -107,12 +107,12 @@ public class ChessModel {
             this.selectedCol = 0;
             String[] fileDirectory = filename.split("/");
             if (filename.contains("project")){
-                fileDirectory = filename.split(Pattern.quote(File.separator));// Not working
+                fileDirectory = filename.split(Pattern.quote(File.separator));
                 alertObservers("Loaded: "+fileDirectory[fileDirectory.length-1]);
             } else{
                 alertObservers("Loaded: " + fileDirectory[2]);
             }
-        }catch (IOException e){
+        }catch (Exception e){
             alertObservers("Failed to load: "+filename);
         }
     }
