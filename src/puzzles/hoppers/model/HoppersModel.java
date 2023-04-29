@@ -101,9 +101,8 @@ public class HoppersModel {
      * Creates a new game by loading the passed filename
      * @param baseFilename file being loaded
      */
-    public void load(String baseFilename) {
+    public void load(String filename) {
         try {
-            String filename = "data/hoppers/" + baseFilename;
             BufferedReader hopperLoader = new BufferedReader(new FileReader(filename));
             System.out.println("Loaded :" + filename);
             String[] dimensions = hopperLoader.readLine().split(" ");
@@ -126,7 +125,7 @@ public class HoppersModel {
             alertObservers("new game");
 
         } catch (IOException ioe) {
-            alertObservers("Failed to load: " + baseFilename);
+            alertObservers("Failed to load: " + filename);
         }
     }
 
@@ -208,7 +207,7 @@ public class HoppersModel {
                     this.selectedFrog = hopperBoard[row][col];
                     alertObservers("Selected (" + row + ", " + col + ")");
                 }
-                // Selecting to take
+            // Selecting to take
             } else {
                 if (hopperBoard[row][col].equals("G") || hopperBoard[row][col].equals("R")) {
                     alertObservers("Can't jump from (" + selectedRow

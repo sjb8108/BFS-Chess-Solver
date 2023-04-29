@@ -50,7 +50,11 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
                     this.model.hint();
                 } else if (line.startsWith( "l" )) {
                     String[] loading = line.split(" ");
-                    this.model.load(loading[1]);
+                    if (loading[1].startsWith("d")) {
+                        this.model.load(loading[1]);
+                    } else {
+                        this.model.load("data/hoppers/" + loading[1]);
+                    }
                 } else if (line.startsWith( "s" )) {
                     String[] args = line.split(" ");
                     int row = Integer.parseInt(args[1]);

@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 
 public class HoppersGUI extends Application implements Observer<HoppersModel, String> {
     private HoppersModel model;
-    private Button[][] buttonArray;
     /** The size of all icons, in square dimension */
     private final static int ICON_SIZE = 75;
     /** the font size for labels and buttons */
@@ -44,6 +43,10 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
     private static final Background waterBackground = new Background(
             new BackgroundFill(Color.LIGHTBLUE, null, null));
 
+    /** Fields for buttons that don't change */
+    private HBox LoadResetHint;
+
+
     public void init() throws IOException {
         this.filename = getParameters().getRaw().get(0);
         this.model = new HoppersModel(this.filename);
@@ -53,12 +56,11 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
     @Override
     public void start(Stage stage) throws Exception {
         this.stage = stage;
-        this.buttonArray = new Button[this.model.getCurrentConfig().getRowDim()][this.model.getCurrentConfig().getColDim()];
         BorderPane mainInterface = new BorderPane();
         mainInterface.setBackground(waterBackground);
 
         HBox gameStatus = new HBox();
-        HBox LoadResetHint = new HBox();
+        this.LoadResetHint = new HBox();
         GridPane hopperBoard = new GridPane();
 
         this.statusLabel = new Label();
@@ -116,8 +118,7 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
                 button.setOnAction(event -> {
                     this.model.selectPiece(finalIRow, finalICol);
                 });
-                hopperBoard.add(button, iRow, iCol);
-                buttonArray[iRow][iCol] = button;
+                hopperBoard.add(button, iCol, iRow);
             }
         }
 
@@ -131,47 +132,8 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
 
     @Override
     public void update(HoppersModel hoppersModel, String msg) {
-        this.buttonArray = new Button[this.model.getCurrentConfig().getRowDim()][this.model.getCurrentConfig().getColDim()];
-        BorderPane mainInterface = new BorderPane();
-        mainInterface.setBackground(waterBackground);
-
-        HBox gameStatus = new HBox();
-        HBox LoadResetHint = new HBox();
-        GridPane hopperBoard = new GridPane();
-
-        this.statusLabel = new Label();
         this.statusLabel.setText(msg);
-        this.statusLabel.setFont(new Font(FONT_SIZE));
-
-        gameStatus.getChildren().add(statusLabel);
-        gameStatus.setAlignment(Pos.CENTER);
-
-        Button loadButton = new Button( "Load");
-        loadButton.setFont(new Font(FONT_SIZE));
-        loadButton.setOnAction(event -> {
-            FileChooser chooser = new FileChooser();
-            String currentPath = Paths.get(".").toAbsolutePath().normalize().toString();
-            currentPath += File.separator + "data" + File.separator + "hoppers";
-            chooser.setInitialDirectory(new File(currentPath));
-            File filechoosen = chooser.showOpenDialog(stage);
-            this.model.load(filechoosen.toString());
-        });
-        LoadResetHint.getChildren().add(loadButton);
-
-        Button resetButton = new Button("Reset");
-        resetButton.setFont(new Font(FONT_SIZE));
-        resetButton.setOnAction(event -> {
-            this.model.reset();
-        });
-        LoadResetHint.getChildren().add(resetButton);
-
-        Button hintButton = new Button("Hint");
-        hintButton.setFont(new Font(FONT_SIZE));
-        hintButton.setOnAction(event -> {
-            this.model.hint();
-        });
-        LoadResetHint.getChildren().add(hintButton);
-        LoadResetHint.setAlignment(Pos.CENTER);
+        GridPane hopperBoard = new GridPane();
 
         for (int iRow = 0; iRow < this.model.getCurrentConfig().getRowDim(); iRow++) {
             for (int iCol = 0; iCol < this.model.getCurrentConfig().getColDim(); iCol++) {
@@ -187,21 +149,22 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
                     button.setGraphic(new ImageView(lilyPad));
                 }
 
-                button.setMinSize(ICON_SIZE,ICON_SIZE);
-                button.setMaxSize(ICON_SIZE,ICON_SIZE);
+                button.setMinSize(ICON_SIZE, ICON_SIZE);
+                button.setMaxSize(ICON_SIZE, ICON_SIZE);
                 int finalIRow = iRow;
                 int finalICol = iCol;
                 button.setOnAction(event -> {
                     this.model.selectPiece(finalIRow, finalICol);
                 });
-                hopperBoard.add(button, iRow, iCol);
-                buttonArray[iRow][iCol] = button;
+                hopperBoard.add(button, iCol, iRow);
             }
         }
+        BorderPane mainInterface = new BorderPane();
 
-        mainInterface.setTop(gameStatus);
-        mainInterface.setBottom(LoadResetHint);
+        mainInterface.setTop(statusLabel);
         mainInterface.setCenter(hopperBoard);
+        mainInterface.setBottom(LoadResetHint);
+
         Scene scene = new Scene(mainInterface);
         stage.setScene(scene);
         stage.show();
