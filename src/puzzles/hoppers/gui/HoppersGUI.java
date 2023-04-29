@@ -69,7 +69,6 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
         BorderPane mainInterface = new BorderPane();
         mainInterface.setBackground(waterBackground);
 
-        HBox gameStatus = new HBox();
         this.LoadResetHint = new HBox();
         GridPane hopperBoard = new GridPane();
 
@@ -77,8 +76,8 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
         this.statusLabel.setText("Loaded: " + filename);
         this.statusLabel.setFont(new Font(FONT_SIZE));
 
-        gameStatus.getChildren().add(statusLabel);
-        gameStatus.setAlignment(Pos.CENTER);
+        statusLabel.setAlignment(Pos.CENTER);
+
 
         Button loadButton = new Button( "Load");
         loadButton.setFont(new Font(FONT_SIZE));
@@ -129,8 +128,8 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
             }
         }
 
-        mainInterface.setTop(gameStatus);
-        mainInterface.setBottom(LoadResetHint);
+        mainInterface.setTop(this.statusLabel);
+        mainInterface.setBottom(this.LoadResetHint);
         mainInterface.setCenter(hopperBoard);
         Scene scene = new Scene(mainInterface);
         stage.setScene(scene);
