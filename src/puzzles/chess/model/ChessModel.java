@@ -180,99 +180,103 @@ public class ChessModel {
      * @param col the column the user selected
      */
     public void selectPieces(int row, int col){
-        String[][] board = this.currentConfig.getChessBoard();
-        if (this.captureOrNot % 2== 1){
-            if (board[row][col].equals(".")){
-                alertObservers("You choose an empty space");
-            } else {
-                this.selectedRow = row;
-                this.selectedCol = col;
-                this.selectedPiece = board[row][col];
-                this.captureOrNot = 2;
-                alertObservers("Selected ("+row+", "+col+")");
-            }
+        if (row > rowdim-1 || col > coldim-1){
+            alertObservers("You choose a space outside the chess board");
         } else {
-            if (board[row][col].equals(".")){
-                alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
-                this.captureOrNot = 1;
-            } else{
-                if (this.selectedPiece.equals("P")){
-                    if(checkPawns(row, col) == true){
-                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
-                        this.captureOrNot = 1;
-                        if (this.currentConfig.isSolution() == true){
-                            alertObservers("You finished the puzzle!");
-                        } else {
-                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
-                        }
-                    } else{
-                        this.captureOrNot = 1;
-                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
-                    }
-                } else if (this.selectedPiece.equals("N")) {
-                    if(checkKnights(row, col) == true){
-                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
-                        this.captureOrNot = 1;
-                        if (this.currentConfig.isSolution() == true){
-                            alertObservers("You finished the puzzle!");
-                        } else {
-                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
-                        }
-                    } else{
-                        this.captureOrNot = 1;
-                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
-                    }
-                } else if (this.selectedPiece.equals("K")) {
-                    if(checkKings(row, col) == true){
-                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
-                        this.captureOrNot = 1;
-                        if (this.currentConfig.isSolution() == true){
-                            alertObservers("You finished the puzzle!");
-                        } else {
-                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
-                        }
-                    } else{
-                        this.captureOrNot = 1;
-                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
-                    }
-                } else if (this.selectedPiece.equals("R")) {
-                    if(checkRooks(row, col) == true){
-                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
-                        this.captureOrNot = 1;
-                        if (this.currentConfig.isSolution() == true){
-                            alertObservers("You finished the puzzle!");
-                        } else {
-                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
-                        }
-                    } else{
-                        this.captureOrNot = 1;
-                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
-                    }
-                } else if (this.selectedPiece.equals("B")) {
-                    if(checkBishops(row, col) == true){
-                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
-                        this.captureOrNot = 1;
-                        if (this.currentConfig.isSolution() == true){
-                            alertObservers("You finished the puzzle!");
-                        } else {
-                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
-                        }
-                    } else{
-                        this.captureOrNot = 1;
-                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
-                    }
+            String[][] board = this.currentConfig.getChessBoard();
+            if (this.captureOrNot % 2 == 1) {
+                if (board[row][col].equals(".")) {
+                    alertObservers("You choose an empty space");
                 } else {
-                    if(checkQueen(row, col) == true){
-                        this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
-                        this.captureOrNot = 1;
-                        if (this.currentConfig.isSolution() == true){
-                            alertObservers("You finished the puzzle!");
+                    this.selectedRow = row;
+                    this.selectedCol = col;
+                    this.selectedPiece = board[row][col];
+                    this.captureOrNot = 2;
+                    alertObservers("Selected (" + row + ", " + col + ")");
+                }
+            } else {
+                if (board[row][col].equals(".")) {
+                    alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                    this.captureOrNot = 1;
+                } else {
+                    if (this.selectedPiece.equals("P")) {
+                        if (checkPawns(row, col) == true) {
+                            this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                            this.captureOrNot = 1;
+                            if (this.currentConfig.isSolution() == true) {
+                                alertObservers("You finished the puzzle!");
+                            } else {
+                                alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            }
                         } else {
-                            alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            this.captureOrNot = 1;
+                            alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
                         }
-                    } else{
-                        this.captureOrNot = 1;
-                        alertObservers("Can't capture from ("+selectedRow+", "+selectedCol+") to ("+row+", "+col+")");
+                    } else if (this.selectedPiece.equals("N")) {
+                        if (checkKnights(row, col) == true) {
+                            this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                            this.captureOrNot = 1;
+                            if (this.currentConfig.isSolution() == true) {
+                                alertObservers("You finished the puzzle!");
+                            } else {
+                                alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            }
+                        } else {
+                            this.captureOrNot = 1;
+                            alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
+                    } else if (this.selectedPiece.equals("K")) {
+                        if (checkKings(row, col) == true) {
+                            this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                            this.captureOrNot = 1;
+                            if (this.currentConfig.isSolution() == true) {
+                                alertObservers("You finished the puzzle!");
+                            } else {
+                                alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            }
+                        } else {
+                            this.captureOrNot = 1;
+                            alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
+                    } else if (this.selectedPiece.equals("R")) {
+                        if (checkRooks(row, col) == true) {
+                            this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                            this.captureOrNot = 1;
+                            if (this.currentConfig.isSolution() == true) {
+                                alertObservers("You finished the puzzle!");
+                            } else {
+                                alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            }
+                        } else {
+                            this.captureOrNot = 1;
+                            alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
+                    } else if (this.selectedPiece.equals("B")) {
+                        if (checkBishops(row, col) == true) {
+                            this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                            this.captureOrNot = 1;
+                            if (this.currentConfig.isSolution() == true) {
+                                alertObservers("You finished the puzzle!");
+                            } else {
+                                alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            }
+                        } else {
+                            this.captureOrNot = 1;
+                            alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
+                    } else {
+                        if (checkQueen(row, col) == true) {
+                            this.currentConfig = new ChessConfig(this.currentConfig.makeNeighbor(selectedRow, selectedCol, row, col, selectedPiece));
+                            this.captureOrNot = 1;
+                            if (this.currentConfig.isSolution() == true) {
+                                alertObservers("You finished the puzzle!");
+                            } else {
+                                alertObservers("Captured from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                            }
+                        } else {
+                            this.captureOrNot = 1;
+                            alertObservers("Can't capture from (" + selectedRow + ", " + selectedCol + ") to (" + row + ", " + col + ")");
+                        }
                     }
                 }
             }
