@@ -45,7 +45,7 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
     }
 
     /**
-     * Displays help message to user, outlining all legal commands
+     * Displays help message to user, outlining all legal commands and their functions
      */
     private void displayHelp() {
         System.out.println( "h(int)              -- hint next move" );
@@ -74,6 +74,7 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
                     } else {
                         this.model.load("data/hoppers/" + loading[1]);
                     }
+                    System.out.println("Loaded: " + loading[1]);
                 } else if (line.startsWith( "s" )) {
                     String[] args = line.split(" ");
                     int row = Integer.parseInt(args[1]);

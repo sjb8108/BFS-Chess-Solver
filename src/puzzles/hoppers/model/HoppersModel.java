@@ -43,8 +43,7 @@ public class HoppersModel {
 
 
     /**
-     * The view calls this to add itself as an observer.
-     *
+     * The view calls this to add itself as an observer
      * @param observer the view
      */
     public void addObserver(Observer<HoppersModel, String> observer) {
@@ -52,8 +51,7 @@ public class HoppersModel {
     }
 
     /**
-     * The model's state has changed (the counter), so inform the view via
-     * the update method
+     * The model's state has changed (the counter), so inform the view via the update method
      */
     private void alertObservers(String msg) {
         for (var observer : observers) {
@@ -104,7 +102,7 @@ public class HoppersModel {
     public void load(String filename) {
         try {
             BufferedReader hopperLoader = new BufferedReader(new FileReader(filename));
-            System.out.println("Loaded :" + filename);
+            //System.out.println("Loaded :" + filename);
             String[] dimensions = hopperLoader.readLine().split(" ");
             this.rowDim = Integer.parseInt(dimensions[0]);
             this.colDim = Integer.parseInt(dimensions[1]);
@@ -151,12 +149,10 @@ public class HoppersModel {
 
         Queue<Configuration> toVisit = new LinkedList<>();
         toVisit.offer(startConfig);
-        int totalConfigs = 1;
 
         while (!toVisit.isEmpty() && !toVisit.peek().isSolution()) {
             Configuration current = toVisit.remove();
             for (Configuration neighbors : current.getNeighbors()) {
-                totalConfigs += 1;
                 if (!(predecessor.containsKey(neighbors))) {
                     predecessor.put(neighbors, current);
                     toVisit.offer(neighbors);
@@ -167,21 +163,26 @@ public class HoppersModel {
         if (toVisit.isEmpty()) {
             alertObservers("Puzzle is not solvable");
         } else {
-            Configuration finishConfig = toVisit.remove();
-            List<Configuration> path = new LinkedList<>();
-            path.add(0, finishConfig);
-            Configuration node = predecessor.get(finishConfig);
-            while (node != null) {
-                path.add(0, node);
-                node = predecessor.get(node);
+            try {
+                Configuration finishConfig = toVisit.remove();
+                List<Configuration> path = new LinkedList<>();
+                path.add(0, finishConfig);
+                Configuration node = predecessor.get(finishConfig);
+                while (node != null) {
+                    path.add(0, node);
+                    node = predecessor.get(node);
+                }
+
+                this.currentConfig = (HoppersConfig) path.get(1);
+                if (this.currentConfig.isSolution()) {
+                    alertObservers("You finished the puzzle!");
+                } else {
+                    alertObservers("Next Step!");
+                }
+            } catch (IndexOutOfBoundsException ie) {
+                alertObservers("Puzzle already solved!");
             }
 
-            this.currentConfig = (HoppersConfig) path.get(1);
-            if (this.currentConfig.isSolution()) {
-                alertObservers("You finished the puzzle!");
-            } else {
-                alertObservers("Next Step!");
-            }
         }
         this.selectOrJump = -1;
     }

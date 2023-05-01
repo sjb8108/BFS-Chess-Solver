@@ -55,7 +55,7 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
 
     /**
      * Initialization function for JavaFX application
-     * @throws IOException
+     * @throws IOException from file reading operations
      */
     public void init() throws IOException {
         this.filename = getParameters().getRaw().get(0);
@@ -133,6 +133,7 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
         mainInterface.setCenter(hopperBoard);
         Scene scene = new Scene(mainInterface);
         stage.setScene(scene);
+        stage.setTitle("Hoppers Game!");
         stage.show();
     }
 
@@ -170,6 +171,7 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
 
         Scene scene = new Scene(mainInterface);
         stage.setScene(scene);
+        stage.setTitle("Hoppers Game!");
         stage.show();
     }
 
