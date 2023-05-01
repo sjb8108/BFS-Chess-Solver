@@ -83,7 +83,11 @@ public class ChessGUI extends Application implements Observer<ChessModel, String
             currentPath += File.separator + "data" + File.separator + "chess";
             chooser.setInitialDirectory(new File(currentPath));
             File filechoosen = chooser.showOpenDialog(stage);
-            this.model.newGame(filechoosen.toString());
+            if (filechoosen == null){
+
+            } else {
+                this.model.newGame(filechoosen.toString());
+            }
         });
         loadButton.setFont(new Font(FONT_SIZE));
         LoadResetHint.getChildren().add(loadButton);
